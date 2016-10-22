@@ -1,18 +1,47 @@
 <div class="container">
   <div class="wrapper col-md-8 col-md-offset-2 col-sm-10">
-    <p><%= notice %></p>
     <%= form_for(@topic) do |f| %>
-      
       <%= f.text_field :content, placeholder: "今なにしてる？", class: 'form-control' %>
-      <br>
       <%= f.submit '投稿', class: 'btn btn-primary btn-block' %>
     <% end %>
     <br><br>
-    <% @topics.each do |topic| %>
-      <p><%= topic.content %></p>
-      <%= link_to "編集する", edit_topic_path(topic.id) %>
-      <%= link_to '削除する', topic_path(topic), method: :delete, data: { confirm: '本当に削除していいですか？' } %>
-    <% end %>
+      <% @topics.each do |topic| %>
+        <% @followed.each do |followed| %>
+          <% @followers.each do |followers| %>
+            <% if topic.user.id == followed.id && topic.user.id == followers.id %>
+            <div class="row">
+              <div class="prof-img">
+                <%= profile_img(topic.user) if profile_img(topic.user) %>
+              </div>
+              <p><%= topic.content %></p>
+              <%= link_to topic_path(topic) do %>
+                <strong>コメントする</strong>
+                <br>
+              <% end %>
+              <%= link_to "編集する", edit_topic_path(topic.id) %>
+              <%= link_to '削除する', topic_path(topic), method: :delete, data: { confirm: '本当に削除していいですか？' } %>
+            </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% @topics.each do |topic| %>
+            <% if topic.user.id == current_user.id %>
+            <div class="row">
+              <div class="prof-img">
+                <%= profile_img(topic.user) if profile_img(topic.user) %>
+              </div>
+              <p><%= topic.content %></p>
+              <%= link_to topic_path(topic) do %>
+                <strong>コメントする</strong>
+                <br>
+              <% end %>
+              <%= link_to "編集する", edit_topic_path(topic.id) %>
+              <%= link_to '削除する', topic_path(topic), method: :delete, data: { confirm: '本当に削除していいですか？' } %>
+            </div>
+        <% end %>
+      <% end %>
+      
   </div>
 </div>
 <div id="page-top-btn" class="page-top-btn">

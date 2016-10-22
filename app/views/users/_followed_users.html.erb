@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>フォロー</h2>
+  <% @user.followed_users.each do |followed| %>
+      <div class="container-child col-md-2 col-sm-4 col-xs-6 ">
+        <div class="user-padding">
+          <%= profile_img(followed) %>
+          <div class="line-break">
+            <%= followed.email %>
+          </div>
+          <% if @user.id == current_user.id %>
+          <%= render 'follow_form', user: followed %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>

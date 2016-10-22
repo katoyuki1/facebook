@@ -1,15 +1,5 @@
 <%= form_for(@topic) do |f| %>
-  <% if @topic.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= @topic.errors.count %>件のエラーがあります。</h2>
-
-      <ul>
-      <% @topic.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= f.error_messages! %>
 
   <br>
   <%= f.text_field :content, placeholder: "今なにしてる？", class: 'form-control' %>

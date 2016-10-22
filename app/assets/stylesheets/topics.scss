@@ -64,9 +64,7 @@ html {
   min-height: 100%;
 }
 
-body {
-  text-align: center;
-}
+
 
 .page-top-btn {
   display: none;
@@ -89,4 +87,30 @@ body {
   &:hover {
     opacity: 0.7;
   }
+}
+
+.flash {
+  color: white;
+  padding-top: 10px;
+}
+
+.prof-img {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.row {
+  background-color: white;
+  margin-bottom: 20px;
+  border-color: #edeeee;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 1px;
+  text-align: center;
+  
+}
+
+body {
+  background-color: #EEEEEE;
 }

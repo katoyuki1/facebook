@@ -1,9 +1,13 @@
 class TopicsController < ApplicationController
-  before_action :set_topic, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_topic, only: [:show, :edit, :update, :destroy]
   
   def index
-    @topics = Topic.all
+    @topics = Topic.all.order(created_at: :desc)
     @topic = Topic.new
+    @users = User.all
+    @followed = current_user.followed_users
+    @followers = current_user.followers
   end
 
   def new
@@ -12,13 +16,21 @@ class TopicsController < ApplicationController
 
   def create
     @topic = Topic.new(topics_params)
+    @topic.user_id = current_user.id
     if @topic.save
       redirect_to topics_path, notice: "投稿しました！"
+      NoticeMailer.sendmail_topic(@topic).deliver
     else
-      # 入力フォームを再描画します。
+      
       render action: 'new'
     end
   end
+  
+  def show
+    @comment = @topic.comments.build
+    @comments = @topic.comments
+    Notification.find(params[:notification_id]).update(read: true) if params[:notification_id]
+  end  
   
   def edit
   end

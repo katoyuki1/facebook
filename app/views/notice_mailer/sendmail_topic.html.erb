@@ -1,0 +1,13 @@
+<h1>NoticeMailer#sendmail_topic</h1>
+
+<p>
+  <%= @greeting %>, find me in app/views/notice_mailer/sendmail_topic.html.erb
+</p>
+
+<h1>Facebookに投稿されました！</h1>
+
+<p>content:<%= @topic.content %></p>
+
+<p>
+  <%= link_to '投稿されたトピックはこちら', topics_url %>
+</p>

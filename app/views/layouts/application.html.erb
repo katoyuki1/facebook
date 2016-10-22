@@ -6,6 +6,23 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+ 
+  <% if user_signed_in? %> 
+    <script>
+      var pusher = new Pusher('<%= ENV["PUSHER_KEY"] %>',{
+        encrypted: true
+      });
+
+      var channel = pusher.subscribe("user_<%= current_user.id %>_channel");
+      channel.bind('comment_created', function(data) {
+        alert(data.message);
+      });
+      channel.bind('notification_created', function(data) {
+        $('#unread_count').html(data.unread_count);
+      });
+    </script>
+  <% end %>
 </head>
 <body>
 
@@ -23,18 +40,40 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "投稿する", new_topic_path %></li>
-          </ul>
-        </li>
+
+        <% if user_signed_in? %>
+          <li><%= link_to "投稿する", topics_path %></li>
+          <li><%= link_to "メッセージ", conversations_path %></li>
+          <li>
+            <%= link_to  notifications_index_path, class: "navbar-brand" do %>
+              <i class="fa fa-bell fa-1x"><span id="unread_count"><%= @notifications_count %></span></i>
+            <% end %>
+          </li>
+        <% else %>
+          <li><%= link_to 'ログイン', new_user_session_path  %></li>
+          <li><%= link_to 'サインアップ', new_user_registration_path %></li>
+        <% end %>
+        <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'ユーザー一覧', users_path %></li>
+                <li><%= link_to 'マイページ', edit_user_registration_path %></li>
+                <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+              </ul>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
 </nav>
 </header>
-  
+  <% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %>">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <%= value %>
+  </div>
+  <% end %>
 <%= yield %>
 
 </body>
