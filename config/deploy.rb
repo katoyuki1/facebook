@@ -1,12 +1,12 @@
 lock '3.6.0'
 
-set :application, 'achieve'
+set :application, 'facebook'
 
 set :repo_url, 'https://github.com/katoyuki1/facebook'
 
 set :branch, ENV['BRANCH'] || 'master'
 
-set :deploy_to, '/var/www/achieve'
+set :deploy_to, '/var/www/facebook'
 
 set :linked_files, %w{.env config/secrets.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets public/uploads}
