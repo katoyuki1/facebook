@@ -10,9 +10,7 @@
             <% if user.id == followed.id && user.id == followers.id %>
               <tbody>
                 <td>
-                  <%# if conversation.target_user(current_user).present? %>
-                    <%= link_to conversation.target_user(current_user).name, conversation_messages_path(conversation)%>
-                  <%# end %>
+                   <%= link_to followed.name, conversations_path(sender_id: current_user.id, recipient_id: followed.id), method: 'post'%>
                 </td>
               </tbody>
             <% end %>

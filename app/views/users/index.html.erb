@@ -12,6 +12,14 @@
             <li>
               <div class="item">
                 <%= link_to user.name, user %>
+                <br>
+                <% @followed.each do |followed| %>
+                  <% @followers.each do |followers| %>
+                    <% if user.id == followed.id && user.id == followers.id %>
+                      <%= link_to 'メッセージ', conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post'%>
+                    <% end %>
+                  <% end %>
+                <% end %>
               </div>
               <%= render partial: 'follow_form', locals: { user: user } if signed_in?   %>
             </li>
